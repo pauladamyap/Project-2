@@ -2,9 +2,11 @@ import time
 import pandas as pd
 import numpy as np
 import datetime
+import glob
 global city
 global month
 global day
+global df
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
@@ -23,18 +25,18 @@ def get_filters():
 
     while True:
         city = input('Which city would you like to analyze?').lower()
-        if city in ('chicago', 'new york city', 'washington'):
+        if city in ('chicago', 'new york city', 'washington', 'all'):
             break
 
     # get user input for month (all, january, february, ... , june)
     while True:
         month = input('Which month would you like to analyze?').lower()
-        if month in ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'):
+        if month in ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'all'):
             break
     # get user input for day of week (all, monday, tuesday, ... sunday)
     while True:
         day = input('Which day would you like to analyze?').lower()
-        if day in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'):
+        if day in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all'):
             break
 
     print('-'*40)
@@ -52,14 +54,41 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
+
+
+    df = pd.DataFrame()
     if city == "new york city":
-        df = pd.read_csv("new_york_city.csv")
+        df = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/new_york_city.csv")
 
     elif city == "chicago":
-        df = pd.read_csv("chicago.csv")
+        df = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/chicago.csv")
 
     elif city == "washington":
-        df = pd.read_csv("washington.csv")
+        df = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/washington.csv")
+
+    elif city == "all":
+        df1 = pd.DataFrame()
+        df2 = pd.DataFrame()
+        df = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/new_york_city.csv")
+        df1 = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/chicago.csv")
+        df2 = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/washington.csv")
+        df.append(df1)
+
+    df['Start Time'] = pd.to_datetime(df['Start Time'])
+    df['Month'] = df['Start Time'].dt.strftime('%B')
+    df['Day'] = df['Start Time'].dt.strftime('%A')
+    df['Hour'] = df['Start Time'].dt.strftime('%I %p')
+
+    if month == "all":
+        df = df
+    else:
+        df = df[df['Month'] == month.title()]
+
+    if day == "all":
+        df = df
+    else:
+        df = df[df['Day'] == day.title()]
+
 
     return df
 
@@ -69,18 +98,21 @@ def time_stats(df):
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
-    df['Month'] = df['Start Time']
-    df['Month'] = df['Month'].apply.find("-")+1:df['Month'].find
-    common_month = df.mode['Month']
-    print(common_month)
+
+
     # display the most common month
 
+    common_month = df['Month'].mode()
+    print("The usage month with the highest frequency is {}.".format(common_month))
 
     # display the most common day of week
 
+    common_day = df['Day'].mode()
+    print("The day with the highest frequency is {}.".format(common_day))
 
     # display the most common start hour
-
+    common_hour = df['Hour'].mode()
+    print("The hour with the highest frequency is {}.".format(common_hour))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -143,6 +175,8 @@ def user_stats(df):
 def main():
     while True:
         city, month, day = get_filters()
+        print(month.title())
+        print(day.title())
         df = load_data(city, month, day)
 
         time_stats(df)
