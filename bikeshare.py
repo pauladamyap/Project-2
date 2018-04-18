@@ -75,6 +75,7 @@ def load_data(city, month, day):
         df.append(df1)
 
     df['Start Time'] = pd.to_datetime(df['Start Time'])
+    df['End Time'] = pd.to_datetime(df['End Time'])
     df['Month'] = df['Start Time'].dt.strftime('%B')
     df['Day'] = df['Start Time'].dt.strftime('%A')
     df['Hour'] = df['Start Time'].dt.strftime('%I %p')
@@ -126,15 +127,15 @@ def station_stats(df):
 
     # display most commonly used start station
     common_start = df['Start Station'].mode()
-    print ("Most trips commenced from {}.".format(common_start))
+    print("Most trips commenced from {}.".format(common_start))
 
     # display most commonly used end station
     common_end = df['End Station'].mode()
-    print ("Most trips ended at {}.".format(common_end))
+    print("Most trips ended at {}.".format(common_end))
 
     # display most frequent combination of start station and end station trip
     common_trip = df['Trip'].mode()
-    print ("The most common journey was between {}.".format(common_trip))
+    print("The most common journey was between {}.".format(common_trip))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -147,10 +148,11 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     # display total travel time
-
-
+    total_travel = df['Trip Duration'].sum()
+    print ("Total travel time was {} minutes.".format(total_travel))
     # display mean travel time
-
+    mean_travel = df['Trip Duration'].mean()
+    print ("Mean travel time was {} minutes.".format(mean_travel))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -163,14 +165,21 @@ def user_stats(df):
     start_time = time.time()
 
     # Display counts of user types
-
+    print("User by type:")
+    df['User Type'].value_counts()
 
     # Display counts of gender
-
+    print("Users by gender:")
+    df['Gender'].value_counts()
 
     # Display earliest, most recent, and most common year of birth
-
-
+    birth_year = df['Birth Year'].unique()
+    earliest = min(birth_year)
+    recent = max(birth_year)
+    common_year = df['Birth Year'].mode()
+    print("The oldest user was born in {}.".format(earliest))
+    print("The youngest user was born in {}".format(recent))
+    print("Most users were born in {}".format(common_year))
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
