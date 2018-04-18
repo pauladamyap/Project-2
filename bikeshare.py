@@ -78,7 +78,7 @@ def load_data(city, month, day):
     df['Month'] = df['Start Time'].dt.strftime('%B')
     df['Day'] = df['Start Time'].dt.strftime('%A')
     df['Hour'] = df['Start Time'].dt.strftime('%I %p')
-
+    df['Trip'] = df[['Start Station', 'End Station']].apply(lambda x: ' - '.join(x), axis =1)
     if month == "all":
         df = df
     else:
@@ -125,13 +125,16 @@ def station_stats(df):
     start_time = time.time()
 
     # display most commonly used start station
-
+    common_start = df['Start Station'].mode()
+    print ("Most trips commenced from {}.".format(common_start))
 
     # display most commonly used end station
-
+    common_end = df['End Station'].mode()
+    print ("Most trips ended at {}.".format(common_end))
 
     # display most frequent combination of start station and end station trip
-
+    common_trip = df['Trip'].mode()
+    print ("The most common journey was between {}.".format(common_trip))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -175,8 +178,8 @@ def user_stats(df):
 def main():
     while True:
         city, month, day = get_filters()
-        print(month.title())
-        print(day.title())
+
+
         df = load_data(city, month, day)
 
         time_stats(df)
