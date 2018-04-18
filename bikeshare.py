@@ -1,8 +1,5 @@
 import time
 import pandas as pd
-import numpy as np
-import datetime
-import glob
 global city
 global month
 global day
@@ -135,7 +132,7 @@ def station_stats(df):
 
     # display most frequent combination of start station and end station trip
     common_trip = df['Trip'].mode()
-    print("The most common journey was between {}.".format(common_trip))
+    print("The most common journey/journies was between {}.".format(common_trip))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
