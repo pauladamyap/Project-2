@@ -55,21 +55,22 @@ def load_data(city, month, day):
 
     df = pd.DataFrame()
     if city == "new york city":
-        df = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/new_york_city.csv")
+        df = pd.read_csv(CITY_DATA[new york city])
 
     elif city == "chicago":
-        df = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/chicago.csv")
+        df = pd.read_csv(CITY_DATA[chicago])
 
     elif city == "washington":
-        df = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/washington.csv")
+        df = pd.read_csv(CITY_DATA[washington])
 
     elif city == "all":
         df1 = pd.DataFrame()
         df2 = pd.DataFrame()
-        df = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/new_york_city.csv")
-        df1 = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/chicago.csv")
-        df2 = pd.read_csv("C:/Users/yappa/OneDrive/Udacity/DataAnalyst/Project 2/Udacity/washington.csv")
+        df = pd.read_csv(CITY_DATA[new york city])
+        df1 = pd.read_csv(CITY_DATA[chicago])
+        df2 = pd.read_csv(CITY_DATA[washington])
         df.append(df1)
+	df.append(df2)
 
     df['Start Time'] = pd.to_datetime(df['Start Time'])
     df['End Time'] = pd.to_datetime(df['End Time'])
@@ -180,15 +181,21 @@ def user_stats(df):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
-
+def header_count(df)
+	While True:
+		h_count = input('Would you like to view more rows in the dataset? Input number of rows to view and 0 to decline.')
+			If int(h_count) == 0
+				break
+			df.head(int(h_count))
+			
 def main():
     while True:
         city, month, day = get_filters()
 
 
         df = load_data(city, month, day)
-
-        time_stats(df)
+		header_count(df)
+     	time_stats(df)
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
