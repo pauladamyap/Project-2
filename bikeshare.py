@@ -186,7 +186,7 @@ def header_count(df)
 		h_count = input('Would you like to view more rows in the dataset? Input number of rows to view and 0 to decline.')
 			If int(h_count) == 0
 				break
-			df.head(int(h_count))
+		df.head(int(h_count))
 			
 def main():
     while True:
