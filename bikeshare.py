@@ -4,6 +4,7 @@ global city
 global month
 global day
 global df
+global h_count
 CITY_DATA = { 'chicago': 'chicago.csv',
 			  'new york city': 'new_york_city.csv',
 			  'washington': 'washington.csv' }
@@ -54,6 +55,7 @@ def load_data(city, month, day):
 
 
 	df = pd.DataFrame()
+
 	if city == "new york city":
 		df = pd.read_csv(CITY_DATA['new york city'])
 
@@ -183,11 +185,12 @@ def user_stats(df):
 
 def header_count(df):
 	while True:
-		h_count = input('Would you like to view more rows in the dataset? Input number of rows to view and 0 to decline.')
-		if int(h_count) == 0:
+		h_count = int(input('How many rows to view? Enter 0 to exit'))
+		print(df.head(h_count))
+		if h_count == 0:
+			print("Proceeding to statistics.")
 			break
 
-	df.head(int(h_count))
 
 def main():
 	while True:
@@ -201,6 +204,7 @@ def main():
 		station_stats(df)
 		trip_duration_stats(df)
 		user_stats(df)
+
 
 		restart = input('\nWould you like to restart? Enter yes or no.\n')
 		if restart.lower() != 'yes':
